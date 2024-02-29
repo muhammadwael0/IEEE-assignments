@@ -4,21 +4,22 @@ int digits(int num);
 
 int main()
 {
-    int num, product = 1;
+    int num, rev_num = 0;
     printf("Enter Number: ");
     scanf("%d", &num);
     int count = digits(num);
     while (num)
     {
-        product *= num % 10;
-        for (int i = 0; i < count; i++)
+        int product = num % 10;
+        for (int i = 0; i < count - 1; i++)
         {
             product *= 10;
         }
         num /= 10;
         count--;
+        rev_num += product;
     }
-    printf("Product of digits = %d\n", product);
+    printf("Product of digits = %d\n", rev_num);
 }
 
 int digits(int num)
