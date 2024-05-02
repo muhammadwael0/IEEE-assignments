@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define Num_Of_Students 3
+#define Num_Of_Students 5
 
 typedef struct
 {
@@ -9,7 +9,7 @@ typedef struct
 
 double Calculate_Students_Average (Person *persons);
 void Sort_Person (Person *person);
-Person Top_Student (Person *persons);
+void Print_Top_Student (Person *persons);
 void Print_Students_Under_Average (Person *persons);
 
 int main()
@@ -20,7 +20,7 @@ int main()
     printf("======================================================\n");
     printf("Enter Student Names then Student grade\n");
 
-    int iter; /* iterator to iterate through Students */
+    int iter; /* to iterate through Students */
     Person persons[Num_Of_Students];
     for (iter = 0; iter < Num_Of_Students; ++iter) {
         printf("Enter Student Name: ");
@@ -32,19 +32,13 @@ int main()
     printf("Average Test Score = %.2lf\n", Calculate_Students_Average(persons));
 
     Print_Students_Under_Average(persons);
-    Person Top_Person = Top_Student(persons);
-    printf("Congratulation You Are The Top Student\n");
-    printf("Student Name = %s\n", Top_Person.name);
-    printf("Student Grade = %i\n", Top_Person.grade);
-
-    Sort_Person(persons);
-    for (int i = 0; i < Num_Of_Students; ++i) {
-        printf("%s  -  %i", persons[i].name, persons[i].grade);
-    }
+    Print_Top_Student(persons);
+    printf("========================================================\n");
 }
 
 double Calculate_Students_Average (Person *persons)
 {
+    /* Calculate Students Average By iterate through persons and get Sum of their grade */
     double avg = 0;
     int iter; /* iterator to iterate through Students */
     for (iter = 0; iter < Num_Of_Students; ++iter) {
@@ -56,19 +50,20 @@ double Calculate_Students_Average (Person *persons)
 
 void Sort_Person (Person *person)
 {
+    /* Sort Persons By using Selection Sort */
     int iter1, iter2; /* iterator to iterate through Students */
     int min, index;
     for (iter1 = 0; iter1 < Num_Of_Students; ++iter1) {
         min = person[iter1].grade;
         index = iter1;
         for (iter2 = iter1 + 1; iter2 < Num_Of_Students; ++iter2) {
-            if (person[iter2].grade < min)
+            if (person[iter2].grade < min) /* Find person with minimum grade */
             {
                 min = person[iter2].grade;
                 index = iter2;
             }
         }
-        if (iter1 != index)
+        if (iter1 != index) /* Swap two persons if their grade not Same person */
         {
             Person temp = person[iter1];
             person[iter1] = person[index];
@@ -77,21 +72,27 @@ void Sort_Person (Person *person)
     }
 }
 
-Person Top_Student (Person *persons)
+void Print_Top_Student (Person *persons)
 {
-    Person person = persons[0];
+    /* Print Top Student to print all students with the maximum grade */
+    Sort_Person(persons);
+    printf("Congratulations to Our Top Students\n");
+    printf("Student Name = %s\n", persons[Num_Of_Students - 1].name);
+    printf("Student Grade = %i\n", persons[Num_Of_Students - 1].grade);
+
     int iter;
-    for (iter = 0; iter < Num_Of_Students; ++iter) {
-        if (persons[iter].grade > person.grade)
+    for (iter = Num_Of_Students - 2; iter >= 0; --iter) {
+        if (persons[iter].grade == persons[Num_Of_Students - 1].grade)
         {
-            person = persons[iter];
+            printf("Student Name = %s\n", persons[iter].name);
+            printf("Student Grade = %i\n", persons[iter].grade);
         }
     }
-    return person;
 }
 
 void Print_Students_Under_Average (Person *persons)
 {
+    /* Print Students Under Average to print all students with grade under average with message */
     double avg = Calculate_Students_Average(persons);
     int iter;
     printf("========================================================\n");
